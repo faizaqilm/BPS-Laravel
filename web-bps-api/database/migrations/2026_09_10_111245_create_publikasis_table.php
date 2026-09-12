@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('publikasis', function (Blueprint $table) {
@@ -16,13 +13,17 @@ return new class extends Migration
             $table->string('judul');
             $table->date('tanggal_rilis');
             $table->string('sampul')->nullable();
+            
+            // Tambahan kolom baru
+            $table->text('abstract')->nullable();
+            $table->string('kategori')->nullable();
+            $table->text('pdf_link')->nullable();
+            $table->string('pub_id')->nullable();
+            
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('publikasis');

@@ -3,23 +3,22 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash; // Jangan lupa import Hash
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Ubah bagian ini untuk menambahkan username dan password (opsional agar bisa dipakai login)
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin BPS',
+            'username' => 'admin', // <-- Tambahkan baris ini
+            'email' => 'admin@bps.go.id',
+            'password' => Hash::make('password123'), // Supaya sekalian bisa dipakai testing login
         ]);
+
+        // Opsional: Panggil GaleriSeeder jika kamu sudah membuatnya di Fase 1 tadi
+        // $this->call([GaleriSeeder::class]);
     }
 }
