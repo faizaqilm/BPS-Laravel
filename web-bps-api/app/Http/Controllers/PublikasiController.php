@@ -63,15 +63,9 @@ class PublikasiController extends Controller
         ]);
 
         if ($request->hasFile('sampul')) {
-            if ($publikasi->sampul) {
-                Storage::disk('public')->delete($publikasi->sampul);
-            }
-            $file = $request->file('sampul');
-            $filename = uniqid('publikasi_') . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/publikasi'), $filename);
-            $data['sampul'] = 'images/publikasi/' . $filename;
+            $path = $request->file('sampul')->store('publikasi', 'public');
+            $data['sampul'] = $path; // otomatis "publikasi/namafile.jpg"
         }
-
         $publikasi->update($data);
 
         return redirect()->route('publikasi.index')->with('success', 'Publikasi berhasil diperbarui');

@@ -25,7 +25,7 @@
 
         @if ($publikasi->sampul)
             <label>Sampul Lama:</label>
-            <img src="{{ asset($item->sampul) }}" width="70"><br><br>
+            <img src="{{ asset($publikasi->sampul) }}" width="70"><br><br>
         @endif
 
         <label for="sampul">Sampul Baru:</label>
