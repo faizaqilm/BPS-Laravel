@@ -7,7 +7,8 @@
             <div class="hero-inner">
                 <h1>Lembaga yang Independen, Tepercaya, dan Berperan Aktif dalam Mendukung Perumusan Kebijakan Berbasis Data Bersama Indonesia Maju Menuju Indonesia Emas 2045</h1>
 
-                <form class="search-bar-home" action="page09A.php" method="get">
+                {{-- [FIX] Action form diarahkan ke route laravel, bukan file php lama --}}
+                <form class="search-bar-home" action="{{ route('publikasi.index') }}" method="get">
                     <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
                     <input type="text" name="keyword" placeholder="Cari data statistik atau publikasi..." autocomplete="off">
                     <button type="submit">Cari</button>

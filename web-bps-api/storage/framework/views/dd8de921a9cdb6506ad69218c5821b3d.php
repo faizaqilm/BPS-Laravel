@@ -1,16 +1,69 @@
 <!DOCTYPE html>
 <html lang="id">
-<head  <?php echo app('Illuminate\Foundation\Vite')(['resources/sass/app.scss', 'resources/js/app.js']); ?> >
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $__env->yieldContent('title', 'BPS Provinsi Kalimantan Utara'); ?></title>
     <link rel="icon" href="<?php echo e(asset('images/Lambang_Badan_Pusat_Statistik_(BPS)_Indonesia.svg')); ?>" type="image/svg+xml">
     
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/sass/app.scss', 'resources/js/app.js']); ?>
+    
     <?php echo $__env->yieldPushContent('styles'); ?> 
+    
+    <style>
+        header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            z-index: 999 !important;
+            margin: 0 !important;
+        }
+
+        body {
+            padding-top: 76px !important;
+            background-color: var(--abu-bg, #f7f8fa) !important;
+            margin: 0 !important;
+        }
+
+        main.home-main, .hero-section {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        
+        .hero-section {
+            padding: 64px 20px 110px 20px !important; 
+        }
+
+        .hero-section h1 {
+            font-size: 26px !important;
+            font-weight: 700 !important;
+            line-height: 1.5 !important;
+        }
+
+        .indikator-container {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 20px !important;
+        }
+        
+        .indikator-card {
+            flex: 0 0 200px !important; 
+            width: 200px !important;
+        }
+        
+        .indikator-title { font-weight: 600 !important; }
+        .indikator-value { font-weight: 700 !important; }
+
+        nav a.active {
+            border-bottom: 3px solid var(--aksen, #17a2b8) !important;
+        }
+    </style>
 </head>
 <body>
 
-    <header class="<?php echo e(request()->routeIs('home') ? 'header-home' : ''); ?>">
+    <header>
         <div class="header-kiri">
             <img src="<?php echo e(asset('images/Lambang_Badan_Pusat_Statistik_(BPS)_Indonesia.svg')); ?>" alt="Logo BPS">
             <div class="judulweb">
@@ -21,10 +74,13 @@
 
         <nav>
             <a class="<?php echo e(request()->routeIs('home') ? 'active' : ''); ?>" href="<?php echo e(route('home')); ?>">Beranda</a>
-            <a class="<?php echo e(request()->routeIs('publikasi.*') ? 'active' : ''); ?>" href="<?php echo e(route('publikasi.index')); ?>">Daftar Publikasi</a>
+            
+            
+            <a class="<?php echo e(request()->routeIs('publikasi.index') ? 'active' : ''); ?>" href="<?php echo e(route('publikasi.index')); ?>">Daftar Publikasi</a>
 
             <?php if(auth()->guard()->check()): ?>
-                <a href="<?php echo e(route('publikasi.create')); ?>">Tambah Publikasi</a>
+                
+                <a class="<?php echo e(request()->routeIs('publikasi.create', 'publikasi.edit') ? 'active' : ''); ?>" href="<?php echo e(route('publikasi.create')); ?>">Tambah Publikasi</a>
             <?php endif; ?>
 
             <a href="https://pst.bps.go.id/" target="_blank" rel="noopener">Layanan</a>
@@ -52,7 +108,7 @@
         </nav>
     </header>
 
-    <main>
+    <main class="<?php echo e(request()->routeIs('home') ? 'home-main' : ''); ?>">
         <?php echo $__env->yieldContent('content'); ?>
     </main>
 
@@ -88,6 +144,6 @@
         </div>
     </footer>
 
-    <?php echo $__env->yieldPushContent('scripts'); ?> 
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html><?php /**PATH E:\XAMPP\Installer\htdocs\PBW\Pertemuan 12\web-bps-api\resources\views/layouts/app.blade.php ENDPATH**/ ?>

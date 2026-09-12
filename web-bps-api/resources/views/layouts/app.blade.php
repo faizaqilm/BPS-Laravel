@@ -1,16 +1,69 @@
 <!DOCTYPE html>
 <html lang="id">
-<head  @vite(['resources/sass/app.scss', 'resources/js/app.js']) >
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'BPS Provinsi Kalimantan Utara')</title>
     <link rel="icon" href="{{ asset('images/Lambang_Badan_Pusat_Statistik_(BPS)_Indonesia.svg') }}" type="image/svg+xml">
     
-    @stack('styles') {{-- untuk CSS tambahan per halaman --}}
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    
+    @stack('styles') 
+    
+    <style>
+        header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            z-index: 999 !important;
+            margin: 0 !important;
+        }
+
+        body {
+            padding-top: 76px !important;
+            background-color: var(--abu-bg, #f7f8fa) !important;
+            margin: 0 !important;
+        }
+
+        main.home-main, .hero-section {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        
+        .hero-section {
+            padding: 64px 20px 110px 20px !important; 
+        }
+
+        .hero-section h1 {
+            font-size: 26px !important;
+            font-weight: 700 !important;
+            line-height: 1.5 !important;
+        }
+
+        .indikator-container {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 20px !important;
+        }
+        
+        .indikator-card {
+            flex: 0 0 200px !important; 
+            width: 200px !important;
+        }
+        
+        .indikator-title { font-weight: 600 !important; }
+        .indikator-value { font-weight: 700 !important; }
+
+        nav a.active {
+            border-bottom: 3px solid var(--aksen, #17a2b8) !important;
+        }
+    </style>
 </head>
 <body>
 
-    <header class="{{ request()->routeIs('home') ? 'header-home' : '' }}">
+    <header>
         <div class="header-kiri">
             <img src="{{ asset('images/Lambang_Badan_Pusat_Statistik_(BPS)_Indonesia.svg') }}" alt="Logo BPS">
             <div class="judulweb">
@@ -21,10 +74,13 @@
 
         <nav>
             <a class="{{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a>
-            <a class="{{ request()->routeIs('publikasi.*') ? 'active' : '' }}" href="{{ route('publikasi.index') }}">Daftar Publikasi</a>
+            
+            {{-- [FIX] Daftar Publikasi hanya aktif jika pas di index, tidak aktif saat create/edit --}}
+            <a class="{{ request()->routeIs('publikasi.index') ? 'active' : '' }}" href="{{ route('publikasi.index') }}">Daftar Publikasi</a>
 
             @auth
-                <a href="{{ route('publikasi.create') }}">Tambah Publikasi</a>
+                {{-- [FIX] Tambah Publikasi aktif saat berada di halaman create atau edit publikasi --}}
+                <a class="{{ request()->routeIs('publikasi.create', 'publikasi.edit') ? 'active' : '' }}" href="{{ route('publikasi.create') }}">Tambah Publikasi</a>
             @endauth
 
             <a href="https://pst.bps.go.id/" target="_blank" rel="noopener">Layanan</a>
@@ -52,7 +108,7 @@
         </nav>
     </header>
 
-    <main>
+    <main class="{{ request()->routeIs('home') ? 'home-main' : '' }}">
         @yield('content')
     </main>
 
@@ -88,6 +144,6 @@
         </div>
     </footer>
 
-    @stack('scripts') {{-- untuk JS tambahan per halaman --}}
+    @stack('scripts')
 </body>
 </html>

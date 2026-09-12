@@ -4,7 +4,7 @@ const path = require('path');
 // ─── PENGATURAN ───
 const targetFolder = './'; 
 const outputFile = 'semua_kode_website.txt';
-const allowedExtensions = ['.js', '.jsx', '.css', '.html', '.php']; // Ekstensi file yang mau diambil
+const allowedExtensions = ['.js', '.jsx', '.css', '.html', '.php', '.jpg', '.png', '.webp']; // Ekstensi file yang mau diambil
 
 // Folder yang WAJIB diabaikan agar file tidak bengkak
 const ignoredFolders = ['node_modules', '.git', 'build', 'dist', 'public']; 

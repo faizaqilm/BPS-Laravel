@@ -92,7 +92,9 @@ class PublikasiController extends Controller
     {
         $domain = '6500';
         $apiKey = '5fe7ead70192dafd9cf4f06b0d10308f';
-        $page = 1;
+
+        // Ambil nomor halaman dari session, default mulai dari halaman 1
+        $page = session('bps_sync_page', 1);
 
         $apiUrl = "https://webapi.bps.go.id/v1/api/list/model/publication/lang/ind/domain/{$domain}/page/{$page}/key/{$apiKey}/";
 
@@ -103,6 +105,8 @@ class PublikasiController extends Controller
                 $result = $response->json();
 
                 if (isset($result['status']) && $result['status'] === 'OK' && isset($result['data'][1])) {
+                    
+                    $maxPages = isset($result['data'][0]['pages']) ? (int)$result['data'][0]['pages'] : 1;
                     $dataApi = array_slice($result['data'][1], 0, 10);
                     $sukses = 0;
 
@@ -127,9 +131,19 @@ class PublikasiController extends Controller
                         );
                         $sukses++;
                     }
-                    return redirect()->route('publikasi.index')->with('success', "Sukses! $sukses publikasi terbaru berhasil ditarik dari API BPS.");
+
+                    // Geser ke halaman berikutnya untuk sinkronisasi selanjutnya
+                    $nextPage = $page + 1;
+                    if ($nextPage > $maxPages) {
+                        $nextPage = 1; // Putar balik ke halaman 1 jika sudah habis
+                    }
+                    session(['bps_sync_page' => $nextPage]);
+
+                    return redirect()->route('publikasi.index')->with('success', "Sukses! $sukses publikasi dari halaman $page berhasil ditarik dari API BPS.");
                 }
             }
+            
+            session(['bps_sync_page' => 1]);
             return redirect()->route('publikasi.index')->withErrors(['Gagal mengambil data dari API BPS.']);
         } catch (\Exception $e) {
             return redirect()->route('publikasi.index')->withErrors(['Terjadi kesalahan koneksi API: ' . $e->getMessage()]);
